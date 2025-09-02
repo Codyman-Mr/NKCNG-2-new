@@ -32,8 +32,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy project files
 COPY . .
 
+# Copy .env file explicitly (important)
+COPY .env .env
+
 # Install PHP dependencies
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-dev --optimize-autoloader --ignore-platform-reqs
+
+# Clear and cache config
+RUN php artisan config:clear && php artisan config:cache
 
 # Install Node dependencies and build assets
 RUN npm install && npm run build
