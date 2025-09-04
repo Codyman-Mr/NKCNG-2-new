@@ -14,6 +14,14 @@ use App\Http\Controllers\GpsDeviceController;
 use App\Http\Controllers\InstallationController;
 use App\Livewire\PaymentHistoryComponent;
 
+
+use Illuminate\Support\Facades\Artisan;
+
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate', ["--force" => true]);
+    return "Migrations ran successfully.";
+});
+
 Route::post('/loan-submit', [AuthController::class, 'submitLoan'])->name('loan.submit');
 
 Route::get('/', [AuthController::class, 'dashboard'])->middleware('auth');
